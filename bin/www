@@ -1,0 +1,53 @@
+const http = require('http')
+const debug = require('debug')('backend:server')
+const { mongoConnectionHandler } = require('../src/db/mongo')
+const app = require('../src/app')
+
+const normalizePort = (port) => {
+    const newPort = parseInt(port, 10)
+    return isNaN(newPort) ? port : ( newPort >= 0 ? newPort: false )
+}
+
+const onError = (error)=> {
+    if(error.syscall !== 'listen') throw error
+    const bind = typeof PORT === 'string'
+     ? 'Pipe ' + PORT 
+     : 'Port ' + PORT
+    
+    switch(error.code) {
+        case 'EACCES':
+            console.error(bind + ' requires elevated privileges')
+            process.exit(1)
+        case 'EADDRINUSE':
+            console.error(bind + ' is already in use')
+            process.exit(1)
+        default:
+            throw error
+    }
+}
+
+const onListening = () => {
+    const addr = server.address()
+    const bind = typeof addr === 'string'
+     ? 'pipe ' + addr
+     : 'port ' + addr.PORT
+    debug('Listening on '+ bind)
+}
+
+const PORT = normalizePort(process.env.PORT || 5000)
+app.set('port',PORT)
+
+const server = http.createServer(app)
+
+mongoConnectionHandler((err)=>{
+    if(err){
+        console.error(err)
+    } else {
+        server.listen(PORT, ()=>{
+            console.log(`server up on http://localhost:${PORT}`)
+        })
+        server.on('error', onError)
+        server.on('listening', onListening)
+    }
+})
+
