@@ -15,12 +15,9 @@ function getPayload(token){
 }
 
 module.exports.jwtLogin = async (req, res, next) => {
-    const { username, password } = req.body
-    if(!username || !password)return res.json({
-        success: false,
-        message: 'invalid data'
-    })
     try {
+        const { username, password } = req.body
+        if(!username || !password)throw new Error('invalid data')
         const user = await User.findOne({username})
         if(!user) return res.json({
             success: false,
