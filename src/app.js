@@ -8,7 +8,6 @@ const { _404_ } = require('./controllers/_404_.controller')
 const app = express()
 
 app.set('trust proxy')
-
 app.use(cors())
 app.use(helmet())
 app.use(express.urlencoded({extended: true}))
