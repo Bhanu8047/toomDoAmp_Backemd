@@ -51,7 +51,7 @@ module.exports.jwtAuthenticationMiddleware = async (req, res, next) => {
         //DEVICE
         
         const { _id } = getPayload(token)
-        const user = await User.findOne({_id, 'auth.token': token, 'auth.ip': req.ip, 'auth.device': device})
+        const user = await User.findOne({_id, 'auth.token': token, 'auth.ip': req.ip})
         if(user){
             req.user = user
             req.auth = {token, ip: req.ip, device}
