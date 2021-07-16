@@ -19,15 +19,9 @@ module.exports.jwtLogin = async (req, res, next) => {
         const { username, password } = req.body
         if(!username || !password)throw new Error('invalid data')
         const user = await User.findOne({username})
-        if(!user) return res.json({
-            success: false,
-            message: 'could not authenticate'
-        })
+        if(!user) throw new Error('could not authenticate')
         const isPasswordMatch = await hash.compare(password, user.password)
-        if(!isPasswordMatch)return res.json({
-            success: false,
-            message: 'could not authenticate'
-        })
+        if(!isPasswordMatch) throw new Error('could not authenticate')
 
         //DEVICE
         const device = req.headers['user-agent']

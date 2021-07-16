@@ -11,7 +11,7 @@ module.exports.addUser = async (req, res, next) => {
         await user.save()
         res.json({
             success: true,
-            user
+            message: 'Account Created.',
         })
     } catch (error) {
         next(error)
@@ -80,4 +80,11 @@ module.exports.deleteUser = async (req, res, next) => {
     } catch (error) {
         next(error)
     }
+}
+
+module.exports.isAuth = async (req, res, next) => {
+    res.json({
+        success: true,
+        message: 'authenticated'
+    })
 }
