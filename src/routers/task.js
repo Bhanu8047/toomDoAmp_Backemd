@@ -11,5 +11,6 @@ router.route('/task')
 .delete(isAuthenticatedMiddleware, controller.deleteTask)
 
 router.get('/tasks', isAuthenticatedMiddleware, controller.getTasks)
+router.put('/task/completed', isAuthenticatedMiddleware, controller.completed)
 
 module.exports = router
